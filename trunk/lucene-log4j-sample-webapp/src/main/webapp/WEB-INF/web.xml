@@ -1,0 +1,55 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <filter>
+    <filter-name>CompressingFilter</filter-name>
+    <filter-class>com.planetj.servlet.filter.compression.CompressingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CompressingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+    <servlet-name>Log_Servlet</servlet-name>
+    <display-name>Log Servlet</display-name>
+    <servlet-class>org.apache.log4j.LogServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Lucene_Log4j_Servlet</servlet-name>
+    <display-name>Lucene Log4j Servlet</display-name>
+    <servlet-class>org.apache.log4j.LuceneLogSearchServlet</servlet-class>
+    <init-param>
+      <param-name>luceneDir</param-name>
+      <param-value>server.log_lucene</param-value>
+    </init-param>
+    <init-param>
+      <param-name>logFile</param-name>
+      <param-value>server.log</param-value>
+    </init-param>
+    <init-param>
+      <param-name>logDir</param-name>
+      <param-value>${LOG_DIR}</param-value>
+    </init-param>
+    <init-param>
+      <param-name>charset</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>maxBackupIndex</param-name>
+      <param-value>2</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Log_Servlet</servlet-name>
+    <url-pattern>/echo</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Lucene_Log4j_Servlet</servlet-name>
+    <url-pattern>/logSearch</url-pattern>
+  </servlet-mapping>
+</web-app>
