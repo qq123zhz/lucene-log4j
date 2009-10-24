@@ -31,13 +31,24 @@ import org.apache.lucene.store.FSDirectory;
  * provide rapid search of log content with index created at
  * {@link FilePosTrackingRollingFileAppender}. You should extend
  * {@link FilePosTrackingRollingFileAppender} to add your own business behavior
- * and index the info you need, e.g. the transaction ID.<br>
- * Note: The security should be handled at {@link javax.servlet.Filter} level to
+ * and index the info you need, e.g. the transaction ID.
+ * <p>
+ * <b>Note</b>: The security should be handled at {@link javax.servlet.Filter} level to
  * disallow unauthorized access to your production logs.
+ * <p>
+ * Accepted parameters through {@link ServletConfig}:<br>
+ * <ul>
+ * <li>logDir: The directory where log4j logs are located</li>
+ * <li>luceneDir: The relative directory from {@code logDir} where the log4j
+ * logs lucene index are located</li>
+ * <li>logFile: The log file name</li>
+ * <li>maxBackupIndex: The amount of log history to keep. It appends a ".1",
+ * ".2" ... ".&lt;maxBackupIndex&gt;" to {@code logFile} and to {@code
+ * luceneDir}</li>
+ * <li>charset: The character encoding to use for reading/writing logs</li>
+ * </ul>
  * 
- * TODO Explain configuration parameters
- * 
- * @author cheng.lee@gmail.com (Cheng Lee)
+ * @author Cheng Lee
  */
 public class LuceneLogSearchServlet extends HttpServlet {
 
