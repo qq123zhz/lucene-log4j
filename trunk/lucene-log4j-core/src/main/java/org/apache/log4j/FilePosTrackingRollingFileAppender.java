@@ -23,7 +23,7 @@ import org.apache.lucene.store.FSDirectory;
  * FilePosTrackingRollingFileAppender extends RollingFileAppender by also
  * tracking log info in a Lucene index for rapid lookup.
  * 
- * @author cheng.lee@gmail.com (Cheng Lee)
+ * @author Cheng Lee
  */
 public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
 
@@ -31,12 +31,9 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
 
   private static final String LUCENE_SUFFIX = "_lucene";
 
-  private boolean isInitialized;
-
   private Directory directory;
-  private IndexWriter indexWriter;
 
-  // private static ThreadLocal instanceStaticRef = new ThreadLocal();
+  private IndexWriter indexWriter;
 
   /**
    * This is the fully qualified name of the Lucene analyzer to use. It must
@@ -45,12 +42,20 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
   private String analyzerClass;
 
   /**
-   * Represents the milliseconds to wait before committing changes to Lucene index
+   * Represents the milliseconds to wait before committing changes to Lucene
+   * index.
    */
   private int indexFlushInterval = DEFAULT_INDEX_FLUSH_INTERVAL;
 
+  /**
+   * A {@link List} of {@link RollOverListener}s to notify after
+   * {@link #rollOver()} event.
+   */
   private static List rollOverListeners = new ArrayList();
 
+  /**
+   * Default constructor.
+   */
   public FilePosTrackingRollingFileAppender() {
     Thread flushThread = new Thread(new Runnable() {
 
@@ -62,7 +67,7 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
             synchronized (FilePosTrackingRollingFileAppender.this) {
               // Flush index to disk
               closeIndex();
-              
+
               init();
             }
           }
@@ -83,6 +88,10 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
     init();
   }
 
+  /**
+   * Initializes the {@link #indexWriter} by either reading an existing Lucene
+   * index or creating a new, empty one.
+   */
   private void init() {
     Analyzer analyzer = getAnalyzer();
 
@@ -96,8 +105,6 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
         directory = FSDirectory.getDirectory(path, shouldCreate);
 
         indexWriter = new IndexWriter(directory, analyzer, shouldCreate);
-
-        // instanceStaticRef.set(this);
       } catch (FileNotFoundException e) {
         // Check if it's related to corrupt index (segment not found)
         String message = e.getMessage();
@@ -124,10 +131,13 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
         }
       }
     }
-
-//    isInitialized = true;
   }
 
+  /**
+   * Returns the {@link Analyzer} to be used.
+   * 
+   * @return a {@link Analyzer}
+   */
   private Analyzer getAnalyzer() {
     if (analyzerClass != null) {
       try {
@@ -142,6 +152,7 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
             + analyzerClass);
       }
     }
+
     return new WhitespaceAnalyzer();
   }
 
@@ -149,6 +160,14 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
     analyzerClass = clazz;
   }
 
+  /**
+   * Obtains the Lucene lock file so we can delete it after a crash.
+   * 
+   * @param path
+   *          The directory where we are storing the Lucene index.
+   * 
+   * @return The path to the lock file.
+   */
   private String getLockFile(String path) {
     File luceneIndexDir = new File(path);
     String luceneIndexDirPath = luceneIndexDir.getAbsolutePath();
@@ -158,9 +177,18 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
 
     String lockFile = lockFileDir + File.separatorChar + "lucene-"
         + DigestUtils.md5Hex(luceneIndexDirPath) + "-write.lock";
+
     return lockFile;
   }
 
+  /**
+   * Attempts to create a directory for storing Lucene index.
+   * 
+   * @param path
+   *          the directory name at which we want to create the index.
+   * 
+   * @return True if successful
+   */
   private boolean checkOrCreateLuceneDir(String path) {
     File file = new File(path);
 
@@ -181,10 +209,6 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
    * super class.
    */
   protected synchronized void subAppend(LoggingEvent event) {
-//    if (!isInitialized) {
-//      init();
-//    }
-
     // Keep track of the file offset at the beginning of the log statement
     long fileLen = ((CountingQuietWriter) qw).getCount();
     // MDC.put("fileOffset", fileLen);
@@ -255,16 +279,23 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
       file.renameTo(target);
     }
 
-    // TODO This should be inside setFile()
+    // Create directory for Lucene
     file = new File(dirName);
     file.mkdir();
 
+    // Create an Lucene index in the above dir
     init();
 
     // Call parent method
     super.rollOver();
   }
 
+  /**
+   * Delete file or directory recursively.
+   * 
+   * @param file
+   *          The {@link File} representing the location to delete
+   */
   private void deleteRecursively(File file) {
     if (file.isFile()) {
       file.delete();
@@ -282,6 +313,14 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
     file.delete();
   }
 
+  /**
+   * Writes to Lucene index.
+   * 
+   * @param fileLen
+   *          The current position at log file.
+   * @param event
+   *          The {@link LoggingEvent} to be logged.
+   */
   private void writeToLucene(long fileLen, LoggingEvent event) {
     Document doc = new Document();
     populateDocument(fileLen, event, doc);
@@ -321,12 +360,14 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
     super.reset();
   }
 
+  /**
+   * Closes Lucene index.
+   */
   private void closeIndex() {
     try {
       if (indexWriter != null) {
         indexWriter.close();
         indexWriter = null;
-        isInitialized = false;
       }
     } catch (IOException e) {
       // Exceptionally, it does not make sense to delegate to an
