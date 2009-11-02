@@ -63,8 +63,9 @@ public class FilePosTrackingRollingFileAppenderIntegTest extends TestCase {
       File testDir = new File(tmpDir);
       testDir.deleteOnExit();
       if (!testDir.exists() && !testDir.mkdir()) {
-        throw new RuntimeException(
-            "Could not create temp dir for " + FilePosTrackingRollingFileAppenderIntegTest.class.getName());
+        throw new RuntimeException("Could not create temp dir for "
+            + FilePosTrackingRollingFileAppenderIntegTest.class.getName()
+            + ": " + testDir);
       }
       logFile = MessageFormat.format(logFilePath, new String[] { testDir
           .getAbsolutePath()
@@ -99,7 +100,7 @@ public class FilePosTrackingRollingFileAppenderIntegTest extends TestCase {
       File log = new File(logFileName);
       if (log.exists()) {
         if (!log.delete()) {
-          throw new RuntimeException("Could not delete log files");
+          throw new RuntimeException("Could not delete log files: " + log);
         }
       }
 
@@ -191,6 +192,8 @@ public class FilePosTrackingRollingFileAppenderIntegTest extends TestCase {
         Directory directory = FSDirectory.getDirectory(indexDir, false);
         int hits = doSearch(directory, "uuid:main");
         assertEquals(expectedHits[i], hits);
+        
+        directory.close();
       }
     }
   }
@@ -225,6 +228,13 @@ public class FilePosTrackingRollingFileAppenderIntegTest extends TestCase {
       }
     } catch (IOException e) {
       throw new RuntimeException("Could not read from stream");
+    } finally {
+      try {
+        expectedLogInputStream.close();
+        actualLogInputStream.close();
+      } catch (IOException e) {
+        throw new RuntimeException("Could not close stream", e);
+      }
     }
   }
 
