@@ -27,12 +27,26 @@ import org.apache.lucene.store.FSDirectory;
  */
 public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
 
+  /**
+   * Represents the default flush interval for the Lucene index.
+   */
   private static final int DEFAULT_INDEX_FLUSH_INTERVAL = 5000;
 
+  /**
+   * This is the suffix that will be added to the {@link #filename} set by
+   * {@link #setFile(String)} to form the final directory name of the Lucene
+   * index.
+   */
   private static final String LUCENE_SUFFIX = "_lucene";
 
+  /**
+   * The Lucene {@link Directory} where the index will be stored.
+   */
   private Directory directory;
 
+  /**
+   * The Lucene {@link IndexWriter} used for adding {@link Document}s to index.
+   */
   private IndexWriter indexWriter;
 
   /**
@@ -82,6 +96,9 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
     flushThread.start();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public synchronized void setFile(String fileName, boolean append,
       boolean bufferedIO, int bufferSize) throws IOException {
     super.setFile(fileName, append, bufferedIO, bufferSize);
@@ -156,6 +173,13 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
     return new WhitespaceAnalyzer();
   }
 
+  /**
+   * Represents the fully qualified class name to be used as alternative
+   * {@link Analyzer}.
+   * 
+   * @param clazz
+   *          The fully qualified name.
+   */
   public void setAnalyzerClass(String clazz) {
     analyzerClass = clazz;
   }
@@ -376,6 +400,13 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
     }
   }
 
+  /**
+   * Adds a {@link RollOverListener} to be notified of {@link #rollOver()}
+   * events.
+   * 
+   * @param listener
+   *          a {@link RollOverListener}.
+   */
   public static void addRollOverListener(RollOverListener listener) {
     rollOverListeners.add(listener);
   }
@@ -392,6 +423,12 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
     // instance.closeIndex();
   }
 
+  /**
+   * Sets the {@link #indexFlushInterval} which represents the milliseconds to
+   * wait before committing changes to Lucene index.
+   * 
+   * @param indexFlushInterval The time in milliseconds
+   */
   public void setIndexFlushInterval(int indexFlushInterval) {
     this.indexFlushInterval = indexFlushInterval;
   }
