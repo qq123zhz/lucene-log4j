@@ -74,6 +74,7 @@
   <modules>
     <module>lucene-log4j-core</module>
     <module>lucene-log4j-sample-webapp</module>
+    <module>lucene-log4j-checkstyle-checks</module>
   </modules>
 
   <build>
@@ -101,9 +102,15 @@
               <arguments>
               </arguments>
             </buildCommand>
+            <buildCommand>
+              <name>net.sf.eclipsecs.core.CheckstyleBuilder</name>
+              <arguments>
+              </arguments>
+            </buildCommand>
           </additionalBuildcommands>
           <additionalProjectnatures>
             <projectnature>org.maven.ide.eclipse.maven2Nature</projectnature>
+            <projectnature>net.sf.eclipsecs.core.CheckstyleNature</projectnature>
           </additionalProjectnatures>
           <classpathContainers>
             <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
