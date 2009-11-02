@@ -5,7 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +51,7 @@ public class LuceLogSearchServletTest extends TestCase {
   private ServletConfig getMockServletConfig() {
     MockControl control = MockControl.createControl(ServletConfig.class);
     ServletConfig mock = (ServletConfig) control.getMock();
-    
+
     // Set the pre-generated lucene sample we have in classpath
     mock.getInitParameter("luceneDir");
     control.setReturnValue("server.log_lucene");
@@ -59,7 +61,12 @@ public class LuceLogSearchServletTest extends TestCase {
 
     mock.getInitParameter("logDir");
     URL logDirResource = getClass().getResource("");
-    control.setReturnValue(logDirResource.getFile());
+    try {
+      control.setReturnValue(URLDecoder.decode(logDirResource.getFile(), "UTF-8"));
+    } catch (UnsupportedEncodingException e) {
+      // Should always support UTF-8 encoding but throwing an RuntimeException just in case
+      throw new RuntimeException(e);
+    }
 
     mock.getInitParameter("charset");
     control.setReturnValue("UTF-8");
