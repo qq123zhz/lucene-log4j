@@ -32,6 +32,13 @@
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
     </dependency>
+
+    <!-- Checkstyle dependency -->
+    <dependency>
+      <groupId>com.googlecode.lucene-log4j</groupId>
+      <artifactId>lucene-log4j-checkstyle-checks</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -47,6 +54,35 @@
           </execution>
         </executions>
       </plugin>
+
+      <!--
+        Need to define checkstyle plugin here and specify the dependency
+        to our styles
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.3</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.googlecode.lucene-log4j</groupId>
+            <artifactId>lucene-log4j-checkstyle-checks</artifactId>
+            <version>${pom.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
+      
+  <reporting>
+    <plugins>
+      <!-- Checkstyle -->
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
