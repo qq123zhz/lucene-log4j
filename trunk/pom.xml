@@ -23,6 +23,14 @@
     <url>http://code.google.com/p/lucene-log4j/issues/list</url>
   </issueManagement>
 
+  <distributionManagement>
+    <repository>
+      <id>lucene-log4j-release</id>
+      <url>dav:https://lucene-log4j.googlecode.com/svn/maven2/releases</url>
+    </repository>
+  </distributionManagement>
+
+  
   <dependencyManagement>
     <dependencies>
       <dependency>
