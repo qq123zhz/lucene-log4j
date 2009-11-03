@@ -26,10 +26,15 @@
   <distributionManagement>
     <repository>
       <id>lucene-log4j-release</id>
+      <name>Google Code Repository</name>
       <url>dav:https://lucene-log4j.googlecode.com/svn/maven2/releases</url>
     </repository>
+    <snapshotRepository>
+      <id>lucene-log4j-snapshot</id>
+      <name>Google Code Repository</name>
+      <url>dav:https://lucene-log4j.googlecode.com/svn/maven2/snapshots</url>
+    </snapshotRepository>
   </distributionManagement>
-
   
   <dependencyManagement>
     <dependencies>
