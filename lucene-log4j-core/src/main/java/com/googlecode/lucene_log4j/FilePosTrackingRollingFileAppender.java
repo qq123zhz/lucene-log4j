@@ -1,4 +1,4 @@
-package org.apache.log4j;
+package com.googlecode.lucene_log4j;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.log4j.MDC;
+import org.apache.log4j.RollingFileAppender;
 import org.apache.log4j.helpers.CountingQuietWriter;
 import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggingEvent;
@@ -243,7 +245,7 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
   }
 
   /**
-   * Extends {@link org.apache.log4j.RollingFileAppender.rollOver} by also
+   * Extends {@link com.googlecode.lucene_log4j.RollingFileAppender.rollOver} by also
    * rotating the lucene index directories.
    * 
    * 

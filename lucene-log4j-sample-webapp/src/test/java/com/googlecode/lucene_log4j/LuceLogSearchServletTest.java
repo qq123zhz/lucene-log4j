@@ -1,4 +1,4 @@
-package org.apache.log4j;
+package com.googlecode.lucene_log4j;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import junit.framework.TestCase;
 
 import org.easymock.MockControl;
+
+import com.googlecode.lucene_log4j.LuceneLogSearchServlet;
 
 public class LuceLogSearchServletTest extends TestCase {
 

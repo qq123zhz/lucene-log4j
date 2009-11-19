@@ -1,4 +1,4 @@
-package org.apache.log4j;
+package com.googlecode.lucene_log4j;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -25,6 +25,9 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+
+import com.googlecode.lucene_log4j.FilePosTrackingRollingFileAppender;
+import com.googlecode.lucene_log4j.RollOverListener;
 
 /**
  * This servlet works closely with {@link FilePosTrackingRollingFileAppender} to

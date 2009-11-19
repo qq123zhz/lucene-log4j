@@ -16,12 +16,12 @@
   <servlet>
     <servlet-name>Log_Servlet</servlet-name>
     <display-name>Log Servlet</display-name>
-    <servlet-class>org.apache.log4j.LogServlet</servlet-class>
+    <servlet-class>com.googlecode.lucene_log4j.LogServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>Lucene_Log4j_Servlet</servlet-name>
     <display-name>Lucene Log4j Servlet</display-name>
-    <servlet-class>org.apache.log4j.LuceneLogSearchServlet</servlet-class>
+    <servlet-class>com.googlecode.lucene_log4j.LuceneLogSearchServlet</servlet-class>
     <init-param>
       <param-name>luceneDir</param-name>
       <param-value>server.log_lucene</param-value>
