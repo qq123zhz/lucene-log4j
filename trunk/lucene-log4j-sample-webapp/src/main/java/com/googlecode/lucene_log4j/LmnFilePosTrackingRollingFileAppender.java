@@ -1,8 +1,11 @@
-package org.apache.log4j;
+package com.googlecode.lucene_log4j;
 
+import org.apache.log4j.MDC;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+
+import com.googlecode.lucene_log4j.FilePosTrackingRollingFileAppender;
 
 public class LmnFilePosTrackingRollingFileAppender extends
     FilePosTrackingRollingFileAppender {

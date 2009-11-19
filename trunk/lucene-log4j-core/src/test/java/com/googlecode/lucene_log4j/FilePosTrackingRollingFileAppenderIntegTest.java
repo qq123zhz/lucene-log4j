@@ -1,4 +1,4 @@
-package org.apache.log4j;
+package com.googlecode.lucene_log4j;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +10,9 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -18,6 +21,8 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+
+import com.googlecode.lucene_log4j.FilePosTrackingRollingFileAppender;
 
 /**
  * This is the integration test on {@link FilePosTrackingRollingFileAppender}.
