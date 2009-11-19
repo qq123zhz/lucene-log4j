@@ -1,4 +1,4 @@
-#labels Phase-Deploy
+#labels Phase-Deploy,Featured
 FilePosTrackingRollingFileAppender Configuration.
 
 = Parameters =
@@ -14,7 +14,7 @@ The FilePosTrackingRollingFileAppender receives the same parameters than the tra
 = Examples = 
 
 {{{
-log4j.appender.A1=org.apache.log4j.FilePosTrackingRollingFileAppender
+log4j.appender.A1=com.googlecode.lucene_log4j.FilePosTrackingRollingFileAppender
 log4j.appender.A1.file=server.log
 log4j.appender.A1.layout=org.apache.log4j.PatternLayout
 log4j.appender.A1.layout.ConversionPattern=%-5p [%c] - %m%n
