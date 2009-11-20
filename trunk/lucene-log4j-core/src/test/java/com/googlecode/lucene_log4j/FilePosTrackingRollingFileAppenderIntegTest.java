@@ -1,10 +1,12 @@
 package com.googlecode.lucene_log4j;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.Properties;
 
@@ -209,6 +211,7 @@ public class FilePosTrackingRollingFileAppenderIntegTest extends TestCase {
 
     InputStream expectedLogInputStream = getClass().getResourceAsStream(
         expectedLogFileName);
+    BufferedReader expectedReader = new BufferedReader(new InputStreamReader(expectedLogInputStream));
     InputStream actualLogInputStream;
     try {
       actualLogInputStream = new FileInputStream(actualLogFileName);
@@ -216,20 +219,21 @@ public class FilePosTrackingRollingFileAppenderIntegTest extends TestCase {
       throw new RuntimeException("The actual log file \"" + actualLogFileName
           + "\" could not be found", e);
     }
+    BufferedReader actualReader = new BufferedReader(new InputStreamReader(actualLogInputStream));
 
     try {
-      int expected;
-      int actual;
-      long filepos = 0;
+      String expected;
+      String actual;
+      long line = 0;
       do {
-        expected = expectedLogInputStream.read();
-        actual = actualLogInputStream.read();
-        filepos++;
-      } while (expected == actual && expected != -1 && actual != -1);
+        expected = expectedReader.readLine();
+        actual = actualReader.readLine();
+        line++;
+      } while (expected != null && actual != null && expected.equals(actual));
 
       if (expected != actual) {
         // This would only be possible if expected and actual differ
-        fail("Log outputs differ at pos: " + filepos);
+        fail("Log outputs differ at line: " + line);
       }
     } catch (IOException e) {
       throw new RuntimeException("Could not read from stream");

@@ -1,9 +1,11 @@
 package com.googlecode.lucene_log4j;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -102,19 +104,22 @@ public class LuceLogSearchServletTest extends TestCase {
    * @param actualInputStream The actual input.
    */
   private void assertLogContent(InputStream expectedInputStream, InputStream actualInputStream) {
+    BufferedReader expectedReader = new BufferedReader(new InputStreamReader(expectedInputStream));
+    BufferedReader actualReader = new BufferedReader(new InputStreamReader(actualInputStream));
+
     try {
-      int expected;
-      int actual;
-      long filepos = 0;
+      String expected;
+      String actual;
+      long line = 0;
       do {
-        expected = expectedInputStream.read();
-        actual = actualInputStream.read();
-        filepos++;
-      } while (expected == actual && expected != -1 && actual != -1);
+        expected = expectedReader.readLine();
+        actual = actualReader.readLine();
+        line++;
+      } while (expected != null && actual != null && expected.equals(actual));
 
       if (expected != actual) {
         // This would only be possible if expected and actual differ
-        fail("Found difference at pos: " + filepos);
+        fail("Found difference at line: " + line);
       }
     } catch (IOException e) {
       throw new RuntimeException("Could not read from stream");
