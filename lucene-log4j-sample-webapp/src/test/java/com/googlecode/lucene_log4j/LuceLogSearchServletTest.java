@@ -117,10 +117,8 @@ public class LuceLogSearchServletTest extends TestCase {
         line++;
       } while (expected != null && actual != null && expected.equals(actual));
 
-      if (expected != actual) {
-        // This would only be possible if expected and actual differ
-        fail("Found difference at line: " + line);
-      }
+      // This would only be possible if expected and actual differ
+      assertEquals("Log outputs differ at line: " + line, expected, actual);
     } catch (IOException e) {
       throw new RuntimeException("Could not read from stream");
     }
