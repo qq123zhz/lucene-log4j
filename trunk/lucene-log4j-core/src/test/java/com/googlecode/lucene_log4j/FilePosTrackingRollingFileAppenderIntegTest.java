@@ -63,7 +63,7 @@ public class FilePosTrackingRollingFileAppenderIntegTest extends TestCase {
 
       // Configure the log file location
       String logFilePath = (String) log4jConfig.get("log4j.appender.A1.file");
-      String tmpDir = System.getProperty("java.io.tmpdir")
+      String tmpDir = System.getProperty("java.io.tmpdir") + File.separatorChar
           + FilePosTrackingRollingFileAppenderIntegTest.class.getName();
       File testDir = new File(tmpDir);
       testDir.deleteOnExit();
