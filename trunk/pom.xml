@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.lucene-log4j</groupId>
   <artifactId>lucene-log4j</artifactId>
@@ -8,14 +7,14 @@
   lucene-log4j solves a recurrent problem that production support team face whenever a live incident
   happens: filtering production log statements to match a session/transaction/user ID.
   </description>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <url>https://lucene-log4j.googlecode.com</url>
 
   <scm>
-    <connection>scm:svn:http://lucene-log4j.googlecode.com/svn/trunk/</connection>
-    <developerConnection>scm:svn:https://lucene-log4j.googlecode.com/svn/trunk/</developerConnection>
-    <url>https://lucene-log4j.googlecode.com/svn/trunk/</url>
+    <connection>scm:svn:http://lucene-log4j.googlecode.com/svn/tags/lucene-log4j-1.0.0</connection>
+    <developerConnection>scm:svn:https://lucene-log4j.googlecode.com/svn/tags/lucene-log4j-1.0.0</developerConnection>
+    <url>https://lucene-log4j.googlecode.com/svn/tags/lucene-log4j-1.0.0</url>
   </scm>
 
   <issueManagement>
