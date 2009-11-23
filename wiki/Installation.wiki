@@ -1,0 +1,22 @@
+#summary Installation instructions for lucene-log4j
+#labels Phase-Deploy,Featured
+
+= Installation =
+
+This project uses and encourages Maven2 for dependencies management. So include the corresponding artifact in your pom.xml to use them.
+
+== Modules ==
+
+=== Core ===
+Contains core utilities to build the lucene log index.
+{{{
+  <groupId>com.googlecode.lucene-log4j</groupId>
+  <artifactId>lucene-log4j-core</artifactId>
+}}}
+
+=== Sample webapp ===
+Contains a sample servlet that allows search on the generated lucene index.
+{{{
+  <groupId>com.googlecode.lucene-log4j</groupId>
+  <artifactId>lucene-log4j-sample-webapp</artifactId>
+}}}
