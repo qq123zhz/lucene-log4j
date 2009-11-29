@@ -245,9 +245,8 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
   }
 
   /**
-   * Extends {@link com.googlecode.lucene_log4j.RollingFileAppender.rollOver} by also
-   * rotating the lucene index directories.
-   * 
+   * Extends {@link com.googlecode.lucene_log4j.RollingFileAppender.rollOver} by
+   * also rotating the lucene index directories.
    * 
    * <p>
    * If <code>MaxBackupIndex</code> is positive, then directories {
@@ -349,11 +348,12 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
    */
   private void writeToLucene(long fileLen, LoggingEvent event) {
     Document doc = new Document();
-    populateDocument(fileLen, event, doc);
-    try {
-      indexWriter.addDocument(doc);
-    } catch (IOException e) {
-      LogLog.error("Could not add doc to index ", e);
+    if (populateDocument(fileLen, event, doc)) {
+      try {
+        indexWriter.addDocument(doc);
+      } catch (IOException e) {
+        LogLog.error("Could not add doc to index ", e);
+      }
     }
   }
 
@@ -365,16 +365,21 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
    * @param fileLen
    *          This is the position where the log statement will be recorded.
    * @param event
-   *          This is the {@link LoggingEvent}
+   *          This is the {@link LoggingEvent}.
    * @param doc
    *          This is the {@link Document} where you should add your fields.
+   * 
+   * @return true if the {@code doc} passed in as argument should be updated,
+   *         i.e. create a new document in Lucene index.
    */
-  public void populateDocument(long fileLen, LoggingEvent event, Document doc) {
+  public boolean populateDocument(long fileLen, LoggingEvent event, Document doc) {
     doc.add(Field.Keyword("uuid", "" + event.getThreadName()));
     doc.add(Field.UnIndexed("fileOffset", "" + fileLen));
     doc
         .add(Field
             .Keyword("currentTimeMillis", "" + System.currentTimeMillis()));
+
+    return true;
   }
 
   /**
@@ -429,7 +434,8 @@ public class FilePosTrackingRollingFileAppender extends RollingFileAppender {
    * Sets the {@link #indexFlushInterval} which represents the milliseconds to
    * wait before committing changes to Lucene index.
    * 
-   * @param indexFlushInterval The time in milliseconds
+   * @param indexFlushInterval
+   *          The time in milliseconds
    */
   public void setIndexFlushInterval(int indexFlushInterval) {
     this.indexFlushInterval = indexFlushInterval;
