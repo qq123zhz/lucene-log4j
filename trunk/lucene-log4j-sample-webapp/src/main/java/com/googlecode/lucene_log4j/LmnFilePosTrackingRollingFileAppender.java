@@ -10,9 +10,7 @@ import com.googlecode.lucene_log4j.FilePosTrackingRollingFileAppender;
 public class LmnFilePosTrackingRollingFileAppender extends
     FilePosTrackingRollingFileAppender {
 
-  public void populateDocument(long fileLen, LoggingEvent event, Document doc) {
-//    String uuid = ((UIDSupportingThread) Thread.currentThread()).getUIDs().get("RUID");
-//    doc.add(Field.Keyword("uuid", uuid));
+  public boolean populateDocument(long fileLen, LoggingEvent event, Document doc) {
     String uuid = (String) MDC.get("JSESSION");
     doc.add(Field.Keyword("uuid", uuid));
     doc.add(Field.UnIndexed("fileOffset", "" + fileLen));
@@ -20,6 +18,8 @@ public class LmnFilePosTrackingRollingFileAppender extends
         .add(Field
             .Keyword("currentTimeMillis", "" + System.currentTimeMillis()));
     doc.add(Field.Text("message", event.getRenderedMessage()));
+    
+    return true;
   }
 
 }
