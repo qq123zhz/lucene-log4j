@@ -7,14 +7,14 @@
   lucene-log4j solves a recurrent problem that production support team face whenever a live incident
   happens: filtering production log statements to match a session/transaction/user ID.
   </description>
-  <version>1.1.0</version>
+  <version>1.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <url>https://lucene-log4j.googlecode.com</url>
 
   <scm>
-    <connection>scm:svn:http://lucene-log4j.googlecode.com/svn/tags/lucene-log4j-1.1.0</connection>
-    <developerConnection>scm:svn:https://lucene-log4j.googlecode.com/svn/tags/lucene-log4j-1.1.0</developerConnection>
-    <url>https://lucene-log4j.googlecode.com/svn/tags/lucene-log4j-1.1.0</url>
+    <connection>scm:svn:http://lucene-log4j.googlecode.com/svn/trunk/</connection>
+    <developerConnection>scm:svn:https://lucene-log4j.googlecode.com/svn/trunk/</developerConnection>
+    <url>https://lucene-log4j.googlecode.com/svn/trunk/</url>
   </scm>
 
   <issueManagement>
