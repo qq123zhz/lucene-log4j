@@ -45,6 +45,11 @@
       <version>${pom.version}</version>
       <classifier>tests</classifier>
     </dependency>
+    <dependency>
+      <groupId>com.googlecode.lucene-log4j</groupId>
+      <artifactId>lucene-log4j-servlet</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
   </dependencies>
       
   <build>
