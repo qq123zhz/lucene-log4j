@@ -1,0 +1,29 @@
+# Download binaries #
+
+This project uses and encourages Maven2 for dependencies management. It's not been uploaded to central yet so you should include the following in your repositories section of the pom.xml:
+
+```
+<repositories>
+  <repository>
+    <id>lucene-log4j-release</id>
+    <name>Lucene-log4j Google Code Repository</name>
+    <url>http://lucene-log4j.googlecode.com/svn/maven2/releases</url>
+  </repository>
+</repositories>
+```
+
+## Modules ##
+
+### Core ###
+Contains core utilities to build the lucene log index.
+```
+  <groupId>com.googlecode.lucene-log4j</groupId>
+  <artifactId>lucene-log4j-core</artifactId>
+```
+
+### Sample webapp ###
+Contains a sample servlet that allows search on the generated lucene index.
+```
+  <groupId>com.googlecode.lucene-log4j</groupId>
+  <artifactId>lucene-log4j-sample-webapp</artifactId>
+```
